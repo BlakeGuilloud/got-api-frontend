@@ -1,6 +1,6 @@
 import axios from 'axios';
 
-const base_url = 'http://localhost:4000/graphql'
+const base_url = 'https://of8ryi0hq0.execute-api.us-east-1.amazonaws.com/dev/graphql'
 
 export function fetchCharacterById(id) {
   const queryStr = `
@@ -45,8 +45,13 @@ export function fetchCharacters(page) {
       }
     }
   `;
+  let configGraphQL = {
+    url: `${base_url}?query=${queryStr}`,
+    method: 'post', 
+    headers: { 'Content-Type': 'application/json' },
+  };
 
-  return axios.get(`${base_url}?query=${queryStr}`)
+  return axios(configGraphQL)
     .then(response => response.data.data.characters)
     .catch(console.error);
 }
