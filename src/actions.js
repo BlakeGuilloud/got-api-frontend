@@ -1,6 +1,7 @@
 import axios from 'axios';
 
 const base_url = 'https://of8ryi0hq0.execute-api.us-east-1.amazonaws.com/dev/graphql'
+// const base_url = 'http://localhost:4000/graphql';
 
 export function fetchCharacterById(id) {
   const queryStr = `
@@ -37,21 +38,15 @@ export function fetchCharacterById(id) {
 }
 
 export function fetchCharacters(page) {
-  const queryStr = `
-    {
+  const query = `{
       characters(page: ${page}) {
-        name,
-        id
-      }
+      name
     }
-  `;
-  let configGraphQL = {
-    url: `${base_url}?query=${queryStr}`,
-    method: 'post', 
-    headers: { 'Content-Type': 'application/json' },
-  };
+  }`
 
-  return axios(configGraphQL)
+  // https://of8ryi0hq0.execute-api.us-east-1.amazonaws.com/dev/graphql?query=%7B%20%20%20%20%20%20characters(page%3A%201)%20%7B%20%20%20%20%20%20%20%20name,%20%20%20%20%20%20%20%20id%20%20%20%20%20%20%7D%20%20%20%20%7D
+
+  return axios.post(`${base_url}`, { query })
     .then(response => response.data.data.characters)
     .catch(console.error);
 }
